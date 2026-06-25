@@ -20,6 +20,9 @@
  */
 import { writeFileSync, mkdirSync, readFileSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const projectRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
 
 const name = process.argv[2];
 if (!name) {
@@ -29,7 +32,7 @@ if (!name) {
   console.error("例:tsx scripts/generate-tutorial-voiceover.ts tutorial-ch2");
   process.exit(1);
 }
-const STEPS_PATH = join("public", "screenshots", name, "steps.json");
+const STEPS_PATH = join(projectRoot, "public", "screenshots", name, "steps.json");
 if (!existsSync(STEPS_PATH)) {
   console.error(`找不到 steps.json:${STEPS_PATH}`);
   process.exit(1);
@@ -38,7 +41,7 @@ const tutorialJson = JSON.parse(readFileSync(STEPS_PATH, "utf-8"));
 
 // 從 cwd 往上走找最近的 .env(讓 worktree 共用 main 的 .env)
 function findEnvFile(): string | null {
-  let dir = process.cwd();
+  let dir = projectRoot;
   while (true) {
     const candidate = join(dir, ".env");
     if (existsSync(candidate)) return candidate;
@@ -66,7 +69,7 @@ loadEnv();
 
 const PROVIDER = (process.env.TTS_PROVIDER ?? "elevenlabs").toLowerCase();
 
-const OUTPUT_DIR = join("public", "voiceover", name);
+const OUTPUT_DIR = join(projectRoot, "public", "voiceover", name);
 
 type ClipToRender = { id: string; text: string };
 type AudioResult = { pcm: Buffer; sampleRate: number };

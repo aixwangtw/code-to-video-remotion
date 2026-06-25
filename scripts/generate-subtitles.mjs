@@ -28,15 +28,16 @@
 
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
 
-const cwd = process.cwd();
+const projectRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 // ───────────────────────────────────────────────────────────────────
 // 抓 video name
 // ───────────────────────────────────────────────────────────────────
 let videoName = process.argv[2];
 if (!videoName) {
-  const configPath = path.join(cwd, "src", "tutorial", "config.ts");
+  const configPath = path.join(projectRoot, "src", "tutorial", "config.ts");
   if (!fs.existsSync(configPath)) {
     console.error("找不到 src/tutorial/config.ts。先 npm install 跑 postinstall,或傳 video-name arg。");
     process.exit(1);
@@ -49,9 +50,9 @@ if (!videoName) {
   videoName = m[1];
 }
 
-const stepsPath = path.join(cwd, "public", "screenshots", videoName, "steps.json");
-const durationsPath = path.join(cwd, "public", "voiceover", videoName, "durations.json");
-const outputDir = path.join(cwd, "output");
+const stepsPath = path.join(projectRoot, "public", "screenshots", videoName, "steps.json");
+const durationsPath = path.join(projectRoot, "public", "voiceover", videoName, "durations.json");
+const outputDir = path.join(projectRoot, "output");
 const srtPath = path.join(outputDir, `${videoName}.srt`);
 
 if (!fs.existsSync(stepsPath)) {

@@ -15,6 +15,7 @@
 import { execSync } from "node:child_process";
 import { readFileSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const PLATFORM = process.env.PLATFORM || "threads";
 const HOST =
@@ -25,7 +26,7 @@ const TOKEN_ENV =
   PLATFORM === "instagram" ? "IG_ACCESS_TOKEN" : "THREADS_ACCESS_TOKEN";
 
 function findEnv() {
-  let dir = process.cwd();
+  let dir = join(dirname(fileURLToPath(import.meta.url)), "..");
   while (true) {
     const f = join(dir, ".env");
     if (existsSync(f)) return f;

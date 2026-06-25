@@ -22,10 +22,13 @@
  */
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
+
+const projectRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 // .env walk-up,跟 voiceover script 同樣行為(讓 worktree 共用 main 的 .env)
 function findEnvFile() {
-  let dir = process.cwd();
+  let dir = projectRoot;
   while (true) {
     const candidate = path.join(dir, ".env");
     if (fs.existsSync(candidate)) return candidate;

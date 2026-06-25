@@ -1,11 +1,14 @@
 import { writeFileSync, mkdirSync, readFileSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 import { content } from "../src/content";
+
+const projectRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
 
 // 簡易 .env 讀取（避免引入 dotenv 套件）
 // 從 cwd 往上走找最近的 .env，讓所有 worktree 共用 main 的 .env
 function findEnvFile(): string | null {
-  let dir = process.cwd();
+  let dir = projectRoot;
   while (true) {
     const candidate = join(dir, ".env");
     if (existsSync(candidate)) return candidate;
@@ -134,7 +137,7 @@ async function generateForScene(scene: SceneToRender): Promise<number> {
   const pcm = Buffer.from(audioB64, "base64");
   const wav = pcmToWav(pcm);
 
-  const outDir = join("public", "voiceover");
+  const outDir = join(projectRoot, "public", "voiceover");
   mkdirSync(outDir, { recursive: true });
   const outPath = join(outDir, `${scene.id}.wav`);
   writeFileSync(outPath, wav);
@@ -162,7 +165,7 @@ console.log(
   `🎙️  Generating voiceover with voice="${VOICE}" for: ${toGenerate.map((s) => s.id).join(", ")}`,
 );
 
-const durationsPath = join("public", "voiceover", "durations.json");
+const durationsPath = join(projectRoot, "public", "voiceover", "durations.json");
 let durations: Record<string, number> = {};
 if (existsSync(durationsPath)) {
   durations = JSON.parse(readFileSync(durationsPath, "utf-8"));

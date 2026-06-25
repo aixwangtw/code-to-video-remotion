@@ -33,9 +33,12 @@ import { exec } from "child_process";
 import fs from "fs";
 import path from "path";
 import { URL } from "url";
+import { fileURLToPath } from "url";
+
+const projectRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 function findEnvFile() {
-  let dir = process.cwd();
+  let dir = projectRoot;
   while (true) {
     const candidate = path.join(dir, ".env");
     if (fs.existsSync(candidate)) return candidate;

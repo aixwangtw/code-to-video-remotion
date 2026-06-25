@@ -6,9 +6,10 @@
 //   npm run archive -- custom-name  # 指定自訂檔名
 
 import { existsSync, readFileSync, copyFileSync, mkdirSync } from "node:fs";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const root = process.cwd();
+const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const contentPath = join(root, "src", "content.ts");
 const archiveDir = join(root, "src", "videos-archive");
 

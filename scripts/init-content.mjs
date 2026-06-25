@@ -3,9 +3,10 @@
 // any voiceover has been generated.
 
 import { existsSync, copyFileSync, writeFileSync, mkdirSync } from "node:fs";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const root = process.cwd();
+const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const contentTarget = join(root, "src", "content.ts");
 const contentExample = join(root, "src", "content.example.ts");
 
