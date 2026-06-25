@@ -1,4 +1,4 @@
-# Claude Videos — Agent Rules (Codex / OpenAI)
+# Remotion — Agent Rules (Codex / OpenAI)
 
 > 適用：Codex 及其他讀取 AGENTS.md 的 agent。
 > 同一套規則也寫在 CLAUDE.md（Claude Code）、GEMINI.md（Gemini CLI）、.github/copilot-instructions.md（GitHub Copilot）、.cursor/rules/remotion.mdc（Cursor）。

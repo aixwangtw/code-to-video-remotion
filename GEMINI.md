@@ -1,4 +1,4 @@
-# Claude Videos — Agent Rules (Gemini CLI)
+# Remotion — Agent Rules (Gemini CLI)
 
 > 與 AGENTS.md 內容相同。Gemini CLI 讀此檔，其他 agent 讀各自對應的入口檔案。
 > 詳細 skill 在 `.claude/skills/` 目錄，讀對應 SKILL.md 取得完整說明。

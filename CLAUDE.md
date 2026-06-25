@@ -1,4 +1,4 @@
-# Claude Videos — 給 Claude Code 的工作規則
+# Remotion — 給 Claude Code 的工作規則
 
 ## 🌳 專案架構 — main + 每支影片一個 worktree
 
