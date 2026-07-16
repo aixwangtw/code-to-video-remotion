@@ -46,6 +46,12 @@ public/voiceover-archive/
 public/music/*.mp3
 !public/music/.gitkeep
 
+# Raw screen-recording footage used as a Composition video source (per-video, private)
+public/videos/**/*.mp4
+public/videos/**/*.webm
+public/videos/**/*.mov
+!public/videos/.gitkeep
+
 # Isolated dev worktrees created by superpowers skills
 .worktrees/
 
