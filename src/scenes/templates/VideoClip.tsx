@@ -16,11 +16,7 @@ type Props = Extract<SceneVisual, { type: "videoClip" }> & {
 
 // 與 Terminal 同樣的黑框視窗語言,但內容是真實錄影。
 // portrait 給手機直式實拍(9:16),landscape 給螢幕錄影(16:9)。
-const SIZES = {
-  landscape: { width: 880, height: 495 },
-  portrait: { width: 315, height: 560 },
-};
-
+// 尺寸跟著畫布走:直式 composition 時手機框自動放大。
 export const VideoClip: React.FC<Props> = ({
   src,
   aspect = "landscape",
@@ -29,7 +25,7 @@ export const VideoClip: React.FC<Props> = ({
   muted = true,
 }) => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
+  const { fps, width: canvasW, height: canvasH } = useVideoConfig();
 
   const containerP = interpolate(Math.max(0, frame - 10), [0, 22], [0, 1], {
     extrapolateLeft: "clamp",
@@ -37,7 +33,16 @@ export const VideoClip: React.FC<Props> = ({
     easing: Easing.out(Easing.back(1.2)),
   });
 
-  const { width, height } = SIZES[aspect];
+  const { width, height } =
+    aspect === "portrait"
+      ? {
+          height: Math.round(canvasH * 0.42),
+          width: Math.round((canvasH * 0.42 * 9) / 16),
+        }
+      : {
+          width: Math.min(880, Math.round(canvasW * 0.81)),
+          height: Math.round((Math.min(880, canvasW * 0.81) * 9) / 16),
+        };
 
   return (
     <div
