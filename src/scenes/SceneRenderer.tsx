@@ -13,6 +13,7 @@ import { CrossedItems } from "./templates/CrossedItems";
 import { Terminal } from "./templates/Terminal";
 import { ChatBox } from "./templates/ChatBox";
 import { PhoneCTA } from "./templates/PhoneCTA";
+import { VideoClip } from "./templates/VideoClip";
 
 type Props = {
   scene: SceneConfig;
@@ -125,5 +126,7 @@ const VisualSlot: React.FC<{
       return <ChatBox {...scene.visual} accentColor={accentColor} />;
     case "phoneCTA":
       return <PhoneCTA {...scene.visual} accentColor={accentColor} />;
+    case "videoClip":
+      return <VideoClip {...scene.visual} accentColor={accentColor} />;
   }
 };

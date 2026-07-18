@@ -70,6 +70,16 @@ export type SceneVisual =
       senderInitial: string; // single letter shown in avatar circle
       messagePreview: string;
       ctaText: string; // big red button label
+    }
+  | {
+      type: "videoClip";
+      // 真實錄影片段（手機實拍、螢幕錄影）。檔案放 public/ 下，
+      // 路徑相對 public，例如 "input/phone-demo.mp4"
+      src: string;
+      aspect?: "landscape" | "portrait"; // 預設 landscape；手機直式實拍用 portrait
+      label?: string; // 視窗標題列文字
+      startFromSeconds?: number; // 從影片第幾秒開始播
+      muted?: boolean; // 預設 true，避免蓋到配音
     };
 
 export type SceneConfig = {
