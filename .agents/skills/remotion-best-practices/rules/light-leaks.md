@@ -1,73 +1,55 @@
 ---
 name: light-leaks
-description: Light leak overlay effects for Remotion using @remotion/light-leaks.
+description: Light leak pixel effect for Remotion using @remotion/effects/light-leak.
 metadata:
-  tags: light-leaks, overlays, effects, transitions
+  tags: light-leaks, effects, canvas
 ---
 
 ## Light Leaks
 
-This only works from Remotion 4.0.415 and up. Use `npx remotion versions` to check your Remotion version and `npx remotion upgrade` to upgrade your Remotion version.
+`@remotion/light-leaks` and its `<LightLeak>` component are **deprecated** as of Remotion v4.0.500 (see `remotion.dev/docs/effects/light-leak`) and will stop being published in Remotion v5. Do not `npx remotion add @remotion/light-leaks` in new work — use the `lightLeak()` effect from `@remotion/effects` instead, which requires Remotion 4.0.500+.
 
-`<LightLeak>` from `@remotion/light-leaks` renders a WebGL-based light leak effect. It reveals during the first half of its duration and retracts during the second half.
+Unlike the old `<LightLeak>` component, `lightLeak()` is not a standalone self-animating overlay — it's a pixel effect applied via the `effects` prop of a canvas-based component (`<Solid>`, `<HtmlInCanvas>`, `<Video>`, `<Img>`, `<CanvasImage>`, `<AnimatedImage>`, `<Gif>`, `<RemotionRiveCanvas>`, or `@remotion/shapes` components). You must drive the reveal/retract animation yourself via `progress` — it no longer auto-animates over a `durationInFrames`.
 
-Typically used inside a `<TransitionSeries.Overlay>` to play over the cut point between two scenes. See the **transitions** rule for `<TransitionSeries>` and overlay usage.
+**Not verified:** the official docs page does not show a `TransitionSeries.Overlay` example or a migration guide from the old package. If you need the old "overlay over the cut point between two scenes" behavior, you'll need to work out which host component to wrap `effects={[lightLeak(...)]}` in yourself (e.g. a full-bleed `<Solid>`) and confirm the visual result — don't assume `<CanvasImage>` (the only example Remotion documents) is the right fit for an overlay use case.
 
-## Prerequisites
-
-```bash
-npx remotion add @remotion/light-leaks
-```
-
-## Basic usage with TransitionSeries
+## Usage (per official docs example)
 
 ```tsx
-import { TransitionSeries } from "@remotion/transitions";
-import { LightLeak } from "@remotion/light-leaks";
+import { lightLeak } from "@remotion/effects/light-leak";
+import { CanvasImage, interpolate, staticFile, useCurrentFrame } from "remotion";
 
-<TransitionSeries>
-  <TransitionSeries.Sequence durationInFrames={60}>
-    <SceneA />
-  </TransitionSeries.Sequence>
-  <TransitionSeries.Overlay durationInFrames={30}>
-    <LightLeak />
-  </TransitionSeries.Overlay>
-  <TransitionSeries.Sequence durationInFrames={60}>
-    <SceneB />
-  </TransitionSeries.Sequence>
-</TransitionSeries>;
+export const MyComp: React.FC = () => {
+  const frame = useCurrentFrame();
+
+  return (
+    <CanvasImage
+      src={staticFile("image.png")}
+      width={1280}
+      height={720}
+      fit="cover"
+      effects={[
+        lightLeak({
+          seed: 3,
+          hueShift: 30,
+          progress: interpolate(frame, [0, 30], [0, 1], {
+            extrapolateLeft: "clamp",
+            extrapolateRight: "clamp",
+          }),
+        }),
+      ]}
+    />
+  );
+};
 ```
 
 ## Props
 
-- `durationInFrames?` — defaults to the parent sequence/composition duration. The effect reveals during the first half and retracts during the second half.
 - `seed?` — determines the shape of the light leak pattern. Different seeds produce different patterns. Default: `0`.
 - `hueShift?` — rotates the hue in degrees (`0`–`360`). Default: `0` (yellow-to-orange). `120` = green, `240` = blue.
+- `progress?` — reveal/retract phase, `0`–`1`. Must be driven manually via `interpolate()`/`useCurrentFrame()`. Default: `0.5`.
+- `disabled?` — skip the effect when `true`. Default: `false`.
 
-## Customizing the look
+## Effects compose in order
 
-```tsx
-import { LightLeak } from "@remotion/light-leaks";
-
-// Blue-tinted light leak with a different pattern
-<LightLeak seed={5} hueShift={240} />;
-
-// Green-tinted light leak
-<LightLeak seed={2} hueShift={120} />;
-```
-
-## Standalone usage
-
-`<LightLeak>` can also be used outside of `<TransitionSeries>`, for example as a decorative overlay in any composition:
-
-```tsx
-import { AbsoluteFill } from "remotion";
-import { LightLeak } from "@remotion/light-leaks";
-
-const MyComp: React.FC = () => (
-  <AbsoluteFill>
-    <MyContent />
-    <LightLeak durationInFrames={60} seed={3} />
-  </AbsoluteFill>
-);
-```
+Multiple effects on the same component apply as a multipass sequence in array order, e.g. `effects={[lightLeak({...}), blur({radius: 10})]}`.

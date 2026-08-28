@@ -42,18 +42,17 @@ import { fade } from "@remotion/transitions/fade";
 
 ## Overlay example
 
-Any React component can be used as an overlay. For a ready-made effect, see the **light-leaks** rule.
+Any React component can be used as an overlay. For a pixel-effect building block (not a drop-in overlay component — see the **light-leaks** rule for the caveat), you can wrap a canvas-based component with `@remotion/effects`.
 
 ```tsx
 import { TransitionSeries } from "@remotion/transitions";
-import { LightLeak } from "@remotion/light-leaks";
 
 <TransitionSeries>
   <TransitionSeries.Sequence durationInFrames={60}>
     <SceneA />
   </TransitionSeries.Sequence>
   <TransitionSeries.Overlay durationInFrames={20}>
-    <LightLeak />
+    <YourOverlayComponent />
   </TransitionSeries.Overlay>
   <TransitionSeries.Sequence durationInFrames={60}>
     <SceneB />
@@ -68,14 +67,13 @@ Transitions and overlays can coexist in the same `<TransitionSeries>`, but an ov
 ```tsx
 import { TransitionSeries, linearTiming } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
-import { LightLeak } from "@remotion/light-leaks";
 
 <TransitionSeries>
   <TransitionSeries.Sequence durationInFrames={60}>
     <SceneA />
   </TransitionSeries.Sequence>
   <TransitionSeries.Overlay durationInFrames={30}>
-    <LightLeak />
+    <YourOverlayComponent />
   </TransitionSeries.Overlay>
   <TransitionSeries.Sequence durationInFrames={60}>
     <SceneB />
