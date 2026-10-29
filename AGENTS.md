@@ -167,6 +167,19 @@ npx concurrently \
 
 ---
 
+## 拍片模式切換
+
+本專案有兩種拍片模式，共用規則（輸出路徑檔名、封面第 0 格、安全區、TTS 發音表）只放一處：`.claude/skills/video-shared-rules/SKILL.md`，兩種模式都要讀。
+
+| 模式 | 怎麼指定 | 適用 | 規則 |
+|---|---|---|---|
+| A：Remotion 模式 | 使用者說「用 Remotion 模式」「用 Remotion 做」 | 教學 tutorial、steps.json/content.ts 套版、需要 Remotion 元件與 render pipeline 的片 | 本檔其餘章節＋`tutorial-*` skills＋`remotion-best-practices` |
+| B：Opus 模式（HTML/GSAP） | 使用者說「用 Opus 模式」「用 HTML/GSAP」 | 產品示範（Playwright 錄真實畫面）、動畫劇情／迷因短片 | `.claude/skills/video-opus-html-gsap/SKILL.md`；範本 `projects/math-question-bank-reel/`、`projects/typhoon-abv-reel/` |
+
+**未指定時**：產品示範與動畫短片預設模式 B；Remotion 只在使用者指定時才用（沿用全域 `video-production` skill）。不確定屬哪類就先問。
+
+---
+
 ## 完整 Skill 參考
 
 詳細規則在 `.claude/skills/` 目錄：
