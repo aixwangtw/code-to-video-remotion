@@ -80,3 +80,8 @@ threads-post.md
 youtube-description.md
 publish-plan.md
 references/**/videos/
+
+# 影片三份規則改放私有 repo aixwangtw/video-skills-private（2026-11-21），這裡只留本機連結
+/.claude/skills/video-opus-html-gsap
+/.claude/skills/video-shared-rules
+/.claude/skills/tutorial-voiceover-style
